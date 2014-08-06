@@ -23,4 +23,15 @@ object Application extends Controller {
 
     dummyFuture.map(Ok(_))
   }
+
+  def blocking = Action.async {
+    val loooongTimeTaskFuture = Future {
+      List.range(0,10).foreach { i =>
+        Thread.sleep(1000)
+        logger.info("Count: " +  i)
+      }
+    }
+    loooongTimeTaskFuture.map(_ => Ok("Finish a looooong task."))
+  }
 }
+
